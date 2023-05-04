@@ -81,12 +81,12 @@ func (m *MemStorage) UpdateBatchMetrics(metrics []repositories.Metrics) error {
 		switch v.MType {
 		case "counter":
 			m.CounterMetricsMutex.Lock()
-			defer m.CounterMetricsMutex.Unlock()
 			m.CounterMetrics[v.ID] += counter(*v.Delta)
+			m.CounterMetricsMutex.Unlock()
 		case "gauge":
 			m.GaugeMetricsMutex.Lock()
-			defer m.GaugeMetricsMutex.Unlock()
 			m.GaugeMetrics[v.ID] = gauge(*v.Value)
+			m.GaugeMetricsMutex.Unlock()
 		}
 
 	}
@@ -116,7 +116,9 @@ func (m *MemStorage) GetCounterMetrics(name string) (string, error) {
 }
 
 func (m *MemStorage) GetAllGaugeMetrics() []repositories.Metrics {
+	fmt.Println("GetAllGaugeMetrics before mutex")
 	m.GaugeMetricsMutex.RLock()
+	fmt.Println("GetAllGaugeMetrics after mutex")
 	defer m.GaugeMetricsMutex.RUnlock()
 
 	res := []repositories.Metrics{}
