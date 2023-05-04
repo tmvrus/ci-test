@@ -116,9 +116,7 @@ func (m *MemStorage) GetCounterMetrics(name string) (string, error) {
 }
 
 func (m *MemStorage) GetAllGaugeMetrics() []repositories.Metrics {
-	fmt.Println("GetAllGaugeMetrics before mutex")
 	m.GaugeMetricsMutex.RLock()
-	fmt.Println("GetAllGaugeMetrics after mutex")
 	defer m.GaugeMetricsMutex.RUnlock()
 
 	res := []repositories.Metrics{}
