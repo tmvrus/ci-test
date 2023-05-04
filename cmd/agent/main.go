@@ -98,20 +98,20 @@ func (a *API) makeRequest(m []Metrics, ctx context.Context, path string) (*http.
 		return nil, err
 	}
 
-	p, err := compress(payload)
-	if err != nil {
-		log.Printf("Unable compress payload, error: %v", err)
-		return nil, err
-	}
+	//p, err := compress(payload)
+	//if err != nil {
+	//	log.Printf("Unable compress payload, error: %v", err)
+	//	return nil, err
+	//}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, a.baseURL+path, bytes.NewBuffer(p))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, a.baseURL+path, bytes.NewBuffer(payload))
 	if err != nil {
 		log.Printf("Unable send Batch for URL: %s \n Error: %s", a.baseURL+path, err)
 		return nil, err
 	}
 
 	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Content-Encoding", "gzip")
+	//req.Header.Add("Content-Encoding", "gzip")
 
 	return req, nil
 
